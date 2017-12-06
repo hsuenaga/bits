@@ -43,12 +43,16 @@ limitations under the License.
 
     function onSignedInChanged(event) {
       const signedIn = event.detail.value;
+      const url = window.location.protocol + '//' + window.location.host + '/';
+      const pathname = window.location.pathname + 'socket.io/';
+
       if (signedIn) {
         const accessToken = authElement.accessToken;
         const options = {
-          query: 'accessToken=' + accessToken
+          query: 'accessToken=' + accessToken,
+          path: pathname
         };
-        socket = io(options);
+        socket = io(url, options);
         socket.on('auth', onAuthEvent);
       } else {
         socket = null;
