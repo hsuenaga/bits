@@ -24,8 +24,8 @@ limitations under the License.
     const DEFAULT_OPTIONS = {
       title: 'BITS',
       icon: {
-        x16: '/images/manifest/icon-16x16.png',
-        x32: '/images/manifest/icon-144x144.png'
+        x16: '../../images/manifest/icon-16x16.png',
+        x32: '../../images/manifest/icon-144x144.png'
       },
       data: {},
       link: '',
@@ -60,7 +60,7 @@ limitations under the License.
     };
 
     Push.config({
-      serviceWorker: '/service-worker.js'
+      serviceWorker: './service-worker.js'
     });
 
     Polymer({
