@@ -21,8 +21,10 @@ limitations under the License.
 
   // Parsing args
   const args = parseArgs(process.argv, {
+    string: ['rootDataDir'],
+    boolean: ['proxy'],
     default: {rootDataDir: path.join(__dirname, '/data')},
-    alias: {rootDataDir: ['d']},
+    alias: {rootDataDir: ['d'], p: 'proxy'},
   });
 
   // Set initial Globals
@@ -30,6 +32,7 @@ limitations under the License.
     global.paths = {};
   }
   global.paths.data = args.rootDataDir;
+  global.use_reverse_proxy = args.proxy;
 
   const os = require('os');
   const cluster = require('cluster');
