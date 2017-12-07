@@ -21,8 +21,7 @@ limitations under the License.
 
   // Parsing args
   const args = parseArgs(process.argv, {
-    string: ['rootDataDir'],
-    boolean: ['proxy'],
+    string: ['rootDataDir', 'proxy'],
     default: {rootDataDir: path.join(__dirname, '/data')},
     alias: {rootDataDir: ['d'], p: 'proxy'},
   });
