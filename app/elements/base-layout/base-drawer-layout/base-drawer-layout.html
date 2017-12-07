@@ -143,7 +143,7 @@ limitations under the License.
           </iron-selector>
         </div>
       </app-drawer>
-      <base-lazy-content id="content" page="[[page]]" current-element="{{currentElement}}"></base-lazy-content>
+      <base-lazy-content id="content" page="[[page]]" current-element="{{currentElement}}" route-base="{{routeBase}}"></base-lazy-content>
     </app-drawer-layout>
 
   </template>
@@ -162,6 +162,10 @@ limitations under the License.
           },
           routeData: {
             type: Object,
+            notify: true
+          },
+          routeBase: {
+            type: String,
             notify: true
           },
           mName: {
@@ -235,6 +239,7 @@ limitations under the License.
             this.set('routeData.pageName', page);
           }
         },
+
         _hidePage: function(page) {
           if (page.visible === undefined || page.visible === null) {
             return false;

@@ -62,7 +62,7 @@ limitations under the License.
         <app-header shadow>
           <base-toolbar id="toolbar" opened$="[[galleryOpened]]" no-sidenav-toggle="[[noSidenavToggle]]" narrow="[[narrow]]"></base-toolbar>
         </app-header>
-        <base-lazy-content id="content" page="[[page]]" current-element="{{currentElement}}"></base-lazy-content>
+        <base-lazy-content id="content" page="[[page]]" current-element="{{currentElement}}" route-base="{{routeBase}}"></base-lazy-content>
       </app-header-layout>
     </app-drawer-layout>
 
@@ -85,6 +85,10 @@ limitations under the License.
         routeData: {
           type: Object
         },
+        routeBase: {
+          type: String,
+          notify: true,
+        },
         pageItems: {
           type: Array
         },
@@ -96,7 +100,7 @@ limitations under the License.
         },
         page: {
           type: Object,
-          computed: '_computePage(pageItems.*, pageName, connected)'
+          computed: '_computePage(pageItems.*, pageName, connected, routeBase)'
         },
         narrow: {
           type: Boolean
@@ -112,7 +116,16 @@ limitations under the License.
         }
       },
 
-      _computePage: function(changes, pageName, connected) {
+      ready: function() {
+        if (this.routeData.pageName.length > 0)
+          this.set('routeBase',  '/' + this.routeData.pageName);
+        else
+          this.set('routeBase', '');
+        this._routeDataPageChanged('', this.routeBase);
+        this.$.content.routeBase = this.routeBase;
+      },
+
+      _computePage: function(changes, pageName, connected, routeBase) {
         if (!connected) {
           return null;
         } else if (Array.isArray(this.pageItems)) {
@@ -132,10 +145,15 @@ limitations under the License.
       },
 
       observers: [
-        '_routeDataPageChanged(routeData.pageName)',
+        '_routeDataPageChanged(routeData.pageName, routeBase)',
       ],
 
-      _routeDataPageChanged: function(pageName) {
+      _routeDataPageChanged: function(pageName, routeBase) {
+        if (routeBase.length > 0) {
+          const off = pageName.indexOf(routeBase);
+          if (off == 0)
+            pageName = pageName.slice(routeBase.length);
+        }
         this.pageName = pageName || 'home';
       },
 

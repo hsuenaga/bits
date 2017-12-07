@@ -33,7 +33,8 @@ limitations under the License.
       m-icon="icons:home"
       m-display-name="Home",
       pages="[[pages]]"
-      default-page-name="dashboard">
+      default-page-name="dashboard"
+      route-base="{{routeBase}}">
     </base-drawer-layout>
 
   </template>
@@ -45,6 +46,10 @@ limitations under the License.
       is: 'base-home',
 
       properties: {
+        routeBase: {
+          type: String,
+          notify: true
+        },
         pages: {
           type: Array,
           value: function() {
@@ -86,12 +91,12 @@ limitations under the License.
               icon: 'icons:timeline'
             }];
           }
-        }
+        },
       },
 
       toggleSidenav: function() {
         this.$.layout.toggleSidenav();
-      }
+      },
     });
   })();
   </script>
