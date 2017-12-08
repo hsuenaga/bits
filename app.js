@@ -21,8 +21,10 @@ limitations under the License.
 
   // Parsing args
   const args = parseArgs(process.argv, {
-    default: {rootDataDir: path.join(__dirname, '/data')},
-    alias: {rootDataDir: ['d']},
+    string: ['rootDataDir', 'trust-proxy'],
+    default: {rootDataDir: path.join(__dirname, '/data'),
+    'trust-proxy': false},
+    alias: {rootDataDir: ['d'], p: 'trust-proxy'}
   });
 
   // Set initial Globals
@@ -30,6 +32,11 @@ limitations under the License.
     global.paths = {};
   }
   global.paths.data = args.rootDataDir;
+
+  // Networking Options
+  global.network_options = {
+    trust_proxy: args['trust-proxy']
+  };
 
   const os = require('os');
   const cluster = require('cluster');
