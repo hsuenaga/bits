@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <script src="../../bower_components/socket.io-client/dist/socket.io.min.js"></script>
+<link rel="import" href="../base-netio/base-netio-behavior.html">
 <link rel="import" href="../base-auth/base-auth.html">
 
 <script>
@@ -48,7 +49,7 @@ limitations under the License.
         const options = {
           query: 'accessToken=' + accessToken
         };
-        socket = io(options);
+        socket = this.getBitsSocket(options);
         socket.on('auth', onAuthEvent);
       } else {
         socket = null;
@@ -289,6 +290,7 @@ limitations under the License.
       * @polymerBehavior
       */
     global.Bits.BaseMessageCenterBehavior = [
+      global.Bits.BaseNetIOBehavior,
       global.Bits.BaseMessageCenterBehaviorImpl
     ];
   })(this);

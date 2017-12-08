@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
+<link rel="import" href="../base-netio/base-netio-behavior.html">
 <link rel="import" href="../base-crud/base-crud-behavior.html">
 
 <script>
@@ -88,9 +89,7 @@ limitations under the License.
           if (Polymer.isInstance(element)) {
             this._cache[id] = Promise.resolve();
           } else {
-            this._cache[id] = new Promise((resolve, reject) => {
-              this.importHref(this._getPath(item).import, resolve, reject, false);
-            });
+            this._cache[id] = this.importHrefSync(this._getPath(item));
           }
         }
         return this._cache[id].then(() => element);
@@ -102,6 +101,7 @@ limitations under the License.
     };
 
     global.Bits.BaseDynamicElementsBehavior = [
+      global.Bits.BaseNetIOBehavior,
       global.Bits.BaseCrudBehavior,
       global.Bits.BaseDynamicElementsBehaviorImpl
     ];

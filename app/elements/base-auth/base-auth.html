@@ -16,6 +16,7 @@ limitations under the License.
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../base-netio/base-netio-behavior.html">
 
 <dom-module id="base-auth">
   <template>
@@ -44,7 +45,7 @@ limitations under the License.
 
   </template>
   <script>
-  (() => {
+  ((global) => {
     'use strict';
 
     let sVerifyToken = null;
@@ -54,7 +55,6 @@ limitations under the License.
       is: 'base-auth',
 
       properties: {
-
         accessToken: {
           type: String,
           observer: '_accessTokenChanged',
@@ -71,9 +71,15 @@ limitations under the License.
           type: Boolean,
           computed: '_computeSignedIn(user)',
           notify: true
-        }
+        },
 
+        _initialized: {
+          type: Boolean,
+          value: false
+        }
       },
+
+      behaviors: [ global.Bits.BaseNetIOBehavior ],
 
       _accessTokenChanged: function(accessToken) {
         if (accessToken) {
@@ -105,11 +111,20 @@ limitations under the License.
       },
 
       ready: function() {
+        this._initialize();
         this.$.accessToken.transactionsComplete.then(() => {
           if (this.$.accessToken.valueIsEmpty(this.accessToken)) {
             this.accessToken = null;
           }
         });
+      },
+
+      _initialize: function() {
+        if (this._initialized)
+          return;
+        this.$.verify.url = this.resolveBitsUrl(this.$.verify.url);
+        this.$.signin.url = this.resolveBitsUrl(this.$.signin.url);
+        this._initialized = true;
       },
 
       _verifyAccessToken: function(accessToken) {
@@ -169,6 +184,6 @@ limitations under the License.
         return this.$.accessToken.transactionsComplete;
       }
     });
-  })();
+  })(this);
   </script>
 </dom-module>

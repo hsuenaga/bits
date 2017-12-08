@@ -20,6 +20,7 @@ limitations under the License.
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../base-netio/base-netio-behavior.html">
 <link rel="import" href="../base-widgets/base-widgets.html">
 <link rel="import" href="../base-shared-styles/base-shared-styles.html">
 <link rel="import" href="../base-auth/base-auth.html">
@@ -116,7 +117,8 @@ limitations under the License.
         is: 'base-dashboard',
 
         behaviors: [
-          Polymer.IronResizableBehavior
+          Polymer.IronResizableBehavior,
+          global.Bits.BaseNetIOBehavior
         ],
 
         created: function() {
@@ -196,10 +198,8 @@ limitations under the License.
             if (Polymer.isInstance(element)) {
               this._cache[widget.id] = Promise.resolve();
             } else {
-              this._cache[widget.id] = new Promise((resolve, reject) => {
-                // this.importHref(widget.import, resolve, reject, true);
-                this.importHref(widget.import, resolve, reject, false);
-              });
+              // this._cache[widget.id] = importHrefAsync(widget.import);
+              this._cache[widget.id] = importHrefSync(widget.import);
             }
           }
           return this._cache[widget.id].then(() => element);
