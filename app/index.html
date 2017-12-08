@@ -56,7 +56,9 @@ limitations under the License.
       // Setup Polymer options
       window.Polymer = {
         dom: 'shadow',
-        lazyRegister: true
+        lazyRegister: true,
+        rootPath: window.location.pathname,
+        importPath: window.location.pathname
       };
       // Setup BITS options
       window.BITS = {

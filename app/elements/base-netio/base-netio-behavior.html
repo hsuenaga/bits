@@ -23,6 +23,20 @@ limitations under the License.
     global.Bits = global.Bits || {};
 
     global.Bits.BaseNetIOBehaviorImpl = {
+      properties: {
+      },
+
+      ready: function() {
+        this._initPolymerPath();
+      },
+
+      _initPolymerPath: function() {
+        // ensure [[rootPath]] and [[importPath]] in template are point
+        // to application mount point.
+        Polymer.rootPath = window.BITS.rootPath;
+        Polymer.importPath = window.BITS.importPath;
+      },
+
       importHrefAsync: function(href) {
         if (href[0] == '/') href = this.resolveBitsUrl(href);
         console.debug('Base: ', window.BITS.baseURI);
