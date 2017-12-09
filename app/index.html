@@ -54,23 +54,19 @@ limitations under the License.
 
     <script>
       // Setup Polymer options
+      // [[rootPath]] directive is supported in polymer 1.9+.
       window.Polymer = {
         dom: 'shadow',
         lazyRegister: true,
+        rootPath: window.location.pathname
+      };
+      window.BITS = {
+        baseURI: window.location.href,
         rootPath: window.location.pathname,
         importPath: window.location.pathname
       };
-      // Setup BITS options
-      window.BITS = {
-        baseURI: window.location.href,
-        rootPath: window.location.pathname
-      };
-      const appBase = document.createElement("base");
-      appBase.setAttribute("href", document.baseURI);
-      document.getElementsByTagName("head")[0].appendChild(appBase);
-
-      console.debug('Site Base URL: ', window.BITS.baseURI);
-      console.debug('Application Root Path: ', window.BITS.rootPath);
+      if (window.BITS.baseURI[window.BITS.baseURI.length - 1] != '/')
+        window.BITS.baseURI = window.BITS.baseURI + '/';
 
       // Load webcomponentsjs polyfill if browser does not support native
       // Web Components

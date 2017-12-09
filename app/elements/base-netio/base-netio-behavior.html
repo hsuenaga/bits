@@ -31,49 +31,57 @@ limitations under the License.
       },
 
       _initPolymerPath: function() {
-        // ensure [[rootPath]] and [[importPath]] in template are point
+        // ensure [[importPath]] in template are point
         // to application mount point.
-        Polymer.rootPath = window.BITS.rootPath;
         Polymer.importPath = window.BITS.importPath;
       },
 
+      // Promised'ed importHref
       importHrefAsync: function(href) {
-        if (href[0] == '/') href = this.resolveBitsUrl(href);
-        console.debug('Base: ', window.BITS.baseURI);
-        console.debug('Async Import: ', href);
+        href = this.resolveBitsUrl(href);
         return new Promise((resolve, reject) => {
+          console.debug('Async Import: ', href);
           this.importHref(href, resolve, reject, true);
         })
-        .then(() => {
+        .then((event) => {
           console.debug('Async Import done: ', href);
+          return event;
         });
       },
 
       importHrefSync: function(href) {
-        if (href[0] == '/') href = this.resolveBitsUrl(href);
-        console.debug('Base: ', window.BITS.baseURI);
-        console.debug('Sync Import: ', href);
+        href = this.resolveBitsUrl(href);
         return new Promise((resolve, reject) => {
+          console.debug('Sync Import: ', href);
           this.importHref(href, resolve, reject, false);
         })
-        .then(() => {
+        .then((event) => {
           console.debug('Sync Import done: ', href);
+          return event;
         });
       },
 
+      // Socket.io
       getBitsSocket: function(options) {
-        let opt = options || {}; 
+        const opt = options || {};
         opt.path = window.BITS.rootPath + 'socket.io';
-        return io(window.BITS.baseURI, opt);
+        console.debug('Socket.io Path: ', opt.path);
+        return io(opt);
       },
 
+      // URL handling
       resolveBitsUrl: function(href) {
-        let base = window.BITS.baseURI;
-        if (base[base.length - 1] == '/')
-          base = base.slice(0, base.length - 1);
-        if (href[0] ==  '/')
-          href = href.slice(1);
-        return base + '/' + href;
+        let uri = href;
+        if (uri[0] == '/') {
+          uri = uri.slice(1);
+          uri = window.BITS.baseURI + uri;
+        }
+        else {
+          uri = this.resolveUrl(uri);
+        }
+        console.debug('URI resolved: ', href, '->', uri);
+
+        return uri;
       }
     },
 

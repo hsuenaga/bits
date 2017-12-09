@@ -34,8 +34,12 @@ limitations under the License.
   global.paths.data = args.rootDataDir;
 
   // Networking Options
+  let root_path = args['trust-proxy']; || '';
+  if (root_path[root_path.length - 1] == '/')
+    root_path = root_path.slice[root_path.length - 2];
   global.network_options = {
-    trust_proxy: args['trust-proxy']
+    trust_proxy: args['trust-proxy'] ? true : false,
+    root_path: root_path;
   };
 
   const os = require('os');
